@@ -3,17 +3,21 @@ import { ProgramInfo } from "./webgl-demo";
 import { Buffers } from "./init-buffers";
 import { Model } from "./load-model";
 import { Camera } from "./camera";
-import { PBRMaterial } from "./materials/pbr";
-import { BasicMaterial } from "./materials/basic";
+import { PBRMaterial } from "./shaders/pbr";
+import { BasicMaterial } from "./shaders/basic";
+import { SkyBox } from "./shaders/skybox";
 
 function drawScene(
   gl: WebGL2RenderingContext,
   material: PBRMaterial | BasicMaterial,
+  skybox: SkyBox,
   model: Model,
   texture: WebGLTexture,
   squareRotation: number,
   camera: Camera
 ) {
+  gl.viewport(0, 0,   (gl.canvas as HTMLCanvasElement).clientWidth,
+  (gl.canvas as HTMLCanvasElement).clientHeight);
   gl.clearColor(0.0, 0.0, 0.0, 1.0); // Clear to black, fully opaque
   gl.clearDepth(1.0); // Clear everything
   gl.enable(gl.DEPTH_TEST); // Enable depth testing
@@ -47,6 +51,11 @@ function drawScene(
     }
 
   });
+
+  // render skybox
+  // can be moved to own class
+  skybox.render(gl,camera.getViewMatrix(),camera.projectionMatrix)
+
 }
 
 // Tell WebGL how to pull out the positions from the position

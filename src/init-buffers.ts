@@ -30,7 +30,6 @@ function initBuffers(gl:WebGL2RenderingContext, mesh: OBJFile.ObjModel, offset:O
  
     const colors = mesh.vertices.map(point => [point.x, point.y, point.z, 1.0]).flat();
     const colorBuffer = gl.createBuffer();
-    console.log("colors",colors)
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
     return colorBuffer;
@@ -45,7 +44,6 @@ function initBuffers(gl:WebGL2RenderingContext, mesh: OBJFile.ObjModel, offset:O
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
     const positions = mesh.vertices.map(point => [point.x, point.y, point.z]).flat();
-    console.log("positions",positions)
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
   
     return positionBuffer;
@@ -55,7 +53,6 @@ function initBuffers(gl:WebGL2RenderingContext, mesh: OBJFile.ObjModel, offset:O
     const indexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,indexBuffer);
     const indices = new Uint16Array(mesh.faces.map(face => face.vertices.map(vertex=>vertex.vertexIndex-1-offset.position)).flat());
-    console.log(indices)
       gl.bufferData(
         gl.ELEMENT_ARRAY_BUFFER,
         new Uint16Array(indices),

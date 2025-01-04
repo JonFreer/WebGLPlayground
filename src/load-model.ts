@@ -44,14 +44,14 @@ export function fetchAndParseOBJ(gl:WebGL2RenderingContext, url:string):Model{
         // const verts = parsedObj.models.map(model=>model.vertices).flat();
         
         parsedObj.models.forEach(model => {
-            console.log(model)
+            // console.log(model)
             model_out.meshes.push({
                 buffers: initBuffers(gl,model,offset),
                 name:  model.name,
                 nVertices: model.faces.length// *3
             });
 
-            console.log(model.faces.length * 3)
+            // console.log(model.faces.length * 3)
 
             // const vertices = mo.map(mesh=>mesh.)
 
@@ -60,7 +60,7 @@ export function fetchAndParseOBJ(gl:WebGL2RenderingContext, url:string):Model{
             offset.normal += model.vertexNormals.length
 
         })
-        console.log(parsedObj)
+        // console.log(parsedObj)
 
     })
     

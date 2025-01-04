@@ -1,10 +1,12 @@
 import {initBuffers} from "./init-buffers"
 import { drawScene } from "./draw-scene";
 import { fetchAndParseOBJ } from "./load-model";
-import { BasicMaterial } from "./materials/basic";
-import { PBRMaterial } from "./materials/pbr";
+import { BasicMaterial } from "./shaders/basic";
+import { PBRMaterial } from "./shaders/pbr";
 import { Camera } from "./camera";
 import { HDRI } from "./hdri";
+import { CubeMap } from "./cubemap";
+import { SkyBox } from "./shaders/skybox";
 
 
 export interface ProgramInfo {
@@ -32,7 +34,7 @@ main();
 //
 // start here
 //
-function main() {
+async function main() {
 
 
   const canvas = document.querySelector("#gl-canvas") as HTMLCanvasElement;
@@ -70,8 +72,8 @@ function main() {
 
   // Initialize a shader program; this is where all the lighting
   // for the vertices and so forth is established.
-  // const pbrMaterial = new PBRMaterial(gl);
-  const pbrMaterial = new BasicMaterial(gl);
+  const pbrMaterial = new PBRMaterial(gl);
+  // const pbrMaterial = new BasicMaterial(gl);
   // Collect all the info needed to use the shader program.
   // Look up which attribute our shader program is using
   // for aVertexPosition and look up uniform locations.
@@ -85,7 +87,11 @@ const camera = new Camera(gl);
 const model = fetchAndParseOBJ(gl, "/backpack/backpack.obj")
 
 // const texture = new HDRI(gl, "/backpack/diffuse.jpg");
-const texture = new HDRI(gl, "/sisulu_2k.hdr");
+const hdri = new HDRI(gl, "/sisulu_2k.hdr");
+await hdri.loadHDR(gl,"/sisulu_2k.hdr")
+// gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+const cubemap = new CubeMap(gl,hdri.texture);
+const skybox = new SkyBox(gl,cubemap);
 // Flip image pixels into the bottom-to-top order that WebGL expects.
 // gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
@@ -98,7 +104,7 @@ function render(now:number) {
   deltaTime = now - then;
   then = now;
 
-  drawScene(gl as WebGL2RenderingContext, pbrMaterial, model, texture.texture, squareRotation,camera);
+  drawScene(gl as WebGL2RenderingContext, pbrMaterial,skybox, model, hdri.texture, squareRotation,camera);
   squareRotation += deltaTime;
 
   requestAnimationFrame(render);
