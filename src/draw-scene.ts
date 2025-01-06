@@ -6,10 +6,11 @@ import { Camera } from "./camera";
 import { PBRMaterial } from "./shaders/pbr";
 import { BasicMaterial } from "./shaders/basic";
 import { SkyBox } from "./shaders/skybox";
+import { PBRIBLMaterial } from "./shaders/pbr_ibl";
 
 function drawScene(
   gl: WebGL2RenderingContext,
-  material: PBRMaterial | BasicMaterial,
+  material: PBRMaterial | BasicMaterial | PBRIBLMaterial,
   skybox: SkyBox,
   model: Model,
   texture: WebGLTexture,
@@ -39,7 +40,7 @@ function drawScene(
     // Tell WebGL to use our program when drawing
     gl.useProgram(material.programInfo.program);
 
-    material.setUniforms(gl,camera,modelMatrix,texture);
+    material.setUniforms(gl,camera,modelMatrix,texture,skybox.cubemap.filtered_texture);
 
     // Tell the shader we bound the texture to texture unit 0
 

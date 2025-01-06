@@ -7,6 +7,7 @@ import { Camera } from "./camera";
 import { HDRI } from "./hdri";
 import { CubeMap } from "./cubemap";
 import { SkyBox } from "./shaders/skybox";
+import { PBRIBLMaterial } from "./shaders/pbr_ibl";
 
 
 export interface ProgramInfo {
@@ -72,7 +73,7 @@ async function main() {
 
   // Initialize a shader program; this is where all the lighting
   // for the vertices and so forth is established.
-  const pbrMaterial = new PBRMaterial(gl);
+  const pbrMaterial = new PBRIBLMaterial(gl);
   // const pbrMaterial = new BasicMaterial(gl);
   // Collect all the info needed to use the shader program.
   // Look up which attribute our shader program is using
@@ -88,12 +89,14 @@ const model = fetchAndParseOBJ(gl, "/backpack/backpack.obj")
 
 // const texture = new HDRI(gl, "/backpack/diffuse.jpg");
 const hdri = new HDRI(gl, "/sisulu_2k.hdr");
+gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
 await hdri.loadHDR(gl,"/sisulu_2k.hdr")
+
 // gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
 const cubemap = new CubeMap(gl,hdri.texture);
 const skybox = new SkyBox(gl,cubemap);
 // Flip image pixels into the bottom-to-top order that WebGL expects.
-// gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
 // Draw the scene
 let then = 0;
