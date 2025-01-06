@@ -41,7 +41,6 @@ async function main() {
 
 
   const canvas = document.querySelector("#gl-canvas") as HTMLCanvasElement;
-  // Initialize the GL context
 
   if (!canvas) {
     alert("Unable to find the canvas element.");
@@ -67,6 +66,23 @@ async function main() {
   }
 
   console.log("ext", ext)
+
+    // Initialize the GL context
+    window.addEventListener('resize', resizeCanvas);
+
+    // Function to resize the canvas and adjust the viewport
+    function resizeCanvas() {
+      // Set the canvas width and height to match the window size
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      if(gl!=null){
+        // Update the WebGL viewport to match the new canvas size
+        gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+      }
+    }
+
+    resizeCanvas()
+  
   
   // Set clear color to black, fully opaque
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -97,7 +113,7 @@ const model: Model = {meshes: [sphere]}
 const hdri = new HDRI(gl, "/sisulu_2k.hdr");
 gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
-await hdri.loadHDR(gl,"/sisulu_2k.hdr")
+await hdri.loadHDR(gl,"/qwantani_dusk_1_2k.hdr")
 
 // gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
 const cubemap = new CubeMap(gl,hdri.texture);
@@ -114,7 +130,7 @@ function render(now:number) {
   then = now;
 
   drawScene(gl as WebGL2RenderingContext, pbrMaterial,skybox, model, hdri.texture, squareRotation,camera);
-  squareRotation += deltaTime;
+  // squareRotation += deltaTime;
 
   requestAnimationFrame(render);
 }

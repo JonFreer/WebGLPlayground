@@ -84,7 +84,7 @@ export class SkyBox{
             setUniforms(gl:WebGL2RenderingContext, view: mat4, projection: mat4){
                 //set the texture
                 gl.activeTexture(gl.TEXTURE0);
-                gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.cubemap.filtered_texture);
+                gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.cubemap.texture);
                 gl.uniform1i(this.programInfo.uniformLocations.environmentMap, 0);
         
                 gl.uniformMatrix4fv(

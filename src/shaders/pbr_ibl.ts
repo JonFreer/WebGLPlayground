@@ -151,11 +151,11 @@ void main()
     vec3 kD = 1.0 - kS;
     kD *= 1.0 - metallic;	  
     vec3 irradiance = texture(irradianceMap, N).rgb;
-    vec3 diffuse      = irradiance * albedo;
+    vec3 diffuse  = irradiance * albedo;
     vec3 ambient = (kD * diffuse) * ao;
     // vec3 ambient = vec3(0.002);
     
-    vec3 color = ambient + Lo;
+    vec3 color = irradiance;//ambient;// + Lo;
 
     // HDR tonemapping
     color = color / (color + vec3(1.0));
@@ -310,8 +310,8 @@ export class PBRIBLMaterial {
     //enviroment map
 
     //set the texture
-    gl.activeTexture(gl.TEXTURE0);
+    gl.activeTexture(gl.TEXTURE1);
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, irradianceMap);
-    gl.uniform1i(this.programInfo.uniformLocations.irradianceMap, 0);
+    gl.uniform1i(this.programInfo.uniformLocations.irradianceMap, 1);
   }
 }
