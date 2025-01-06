@@ -48,11 +48,15 @@ export class Camera{
         // Handle user input
         gl.canvas.addEventListener('mousemove', (event: Event) => {
             const mouseEvent = event as MouseEvent;
-            console.log("mouse evnet")
             if (mouseEvent.buttons === 1) { // Left button is held down
                 this.azimuth += mouseEvent.movementX * 0.01;
                 this.elevation -= mouseEvent.movementY * 0.01;
             }
+        });
+
+        gl.canvas.addEventListener('wheel', (event: Event) => {
+            const wheelEvent = event as WheelEvent;
+            this.radius += wheelEvent.deltaY * 0.01;
         });
     }
 
