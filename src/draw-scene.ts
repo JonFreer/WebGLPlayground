@@ -1,6 +1,5 @@
 import { mat4 } from "gl-matrix";
 import { ProgramInfo } from "./webgl-demo";
-import { Buffers } from "./init-buffers";
 import { Model } from "./load-model";
 import { Camera } from "./camera";
 import { PBRMaterial } from "./shaders/pbr";
@@ -45,7 +44,7 @@ function drawScene(
     // Tell the shader we bound the texture to texture unit 0
 
     {
-      const vertexCount = mesh.nVertices*3;
+      const vertexCount = mesh.indexCount;
       const type = gl.UNSIGNED_SHORT;
       const offset = 0;
       gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
@@ -56,84 +55,10 @@ function drawScene(
   // render skybox
   // can be moved to own class
   skybox.render(gl,camera.getViewMatrix(),camera.projectionMatrix)
-
 }
 
-// Tell WebGL how to pull out the positions from the position
-// buffer into the vertexPosition attribute.
-function setPositionAttribute(
-  gl: WebGL2RenderingContext,
-  buffers: Buffers,
-  programInfo: ProgramInfo
-) {
-  const numComponents = 3; // pull out 2 values per iteration
-  const type = gl.FLOAT; // the data in the buffer is 32bit floats
-  const normalize = false; // don't normalize
-  const stride = 0; // how many bytes to get from one set of values to the next
-  // 0 = use type and numComponents above
-  const offset = 0; // how many bytes inside the buffer to start from
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
-  gl.vertexAttribPointer(
-    programInfo.attribLocations.vertexPosition,
-    numComponents,
-    type,
-    normalize,
-    stride,
-    offset
-  );
-  gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
-}
 
-function setColorAttribute(
-  gl: WebGL2RenderingContext,
-  buffers: Buffers,
-  programInfo: ProgramInfo
-) {
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color);
-  gl.vertexAttribPointer(
-    programInfo.attribLocations.vertexColor,
-    4,
-    gl.FLOAT,
-    false,
-    0,
-    0
-  );
-  gl.enableVertexAttribArray(programInfo.attribLocations.vertexColor);
-}
 
-function setNormalAttribute(
-  gl: WebGL2RenderingContext,
-  buffers: Buffers,
-  programInfo: ProgramInfo
-) {
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.normal);
-  gl.vertexAttribPointer(
-    programInfo.attribLocations.vertexNormal,
-    3,
-    gl.FLOAT,
-    false,
-    0,
-    0
-  );
-  gl.enableVertexAttribArray(programInfo.attribLocations.vertexNormal);
-}
-
-function setTextureAttribute(
-  gl: WebGL2RenderingContext,
-  buffers: Buffers,
-  programInfo: ProgramInfo
-) {
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.textureCoord);
-  gl.vertexAttribPointer(
-    programInfo.attribLocations.textureCoord,
-    2,
-    gl.FLOAT,
-    false,
-    0,
-    0
-  );
-  gl.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
-}
 
 export function setAttribute(gl: WebGL2RenderingContext, location: GLint, buffer: WebGLBuffer,size: GLint, type: GLenum){
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer); 

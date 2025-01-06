@@ -1,13 +1,14 @@
 import * as OBJFile from 'obj-file-parser';
 import { Offset } from './load-model';
+import { Buffers } from './mesh';
 
-export interface Buffers{
-    position: WebGLBuffer;
-    color: WebGLBuffer;
-    indices: WebGLBuffer;
-    textureCoord: WebGLBuffer;
-    normal: WebGLBuffer;
-}
+// export interface Buffers{
+//     position: WebGLBuffer;
+//     color: WebGLBuffer;
+//     indices: WebGLBuffer;
+//     textureCoord: WebGLBuffer;
+//     normal: WebGLBuffer;
+// }
 
 function initBuffers(gl:WebGL2RenderingContext, mesh: OBJFile.ObjModel, offset:Offset) : Buffers {
     const positionBuffer = initPositionBuffer(gl,mesh);
@@ -18,7 +19,7 @@ function initBuffers(gl:WebGL2RenderingContext, mesh: OBJFile.ObjModel, offset:O
     
     return {
       position: positionBuffer,
-      color: colorBuffer,
+      // color: colorBuffer,
       indices: indexBuffer,
       textureCoord: textureCoordBuffer,
       normal: normalBuffer

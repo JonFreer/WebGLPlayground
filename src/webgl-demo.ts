@@ -1,6 +1,6 @@
 import {initBuffers} from "./init-buffers"
 import { drawScene } from "./draw-scene";
-import { fetchAndParseOBJ } from "./load-model";
+import { fetchAndParseOBJ, Model } from "./load-model";
 import { BasicMaterial } from "./shaders/basic";
 import { PBRMaterial } from "./shaders/pbr";
 import { Camera } from "./camera";
@@ -8,6 +8,8 @@ import { HDRI } from "./hdri";
 import { CubeMap } from "./cubemap";
 import { SkyBox } from "./shaders/skybox";
 import { PBRIBLMaterial } from "./shaders/pbr_ibl";
+import { SphereGeometry } from "./geometry/sphere";
+import { Mesh } from "./mesh";
 
 
 export interface ProgramInfo {
@@ -85,7 +87,11 @@ async function main() {
 // objects we'll be drawing.
 // const buffers = initBuffers(gl);
 const camera = new Camera(gl);
-const model = fetchAndParseOBJ(gl, "/backpack/backpack.obj")
+// const model = fetchAndParseOBJ(gl, "/backpack/backpack.obj")
+
+console.log(new SphereGeometry(64,64))
+const sphere  = new Mesh(gl,new SphereGeometry(64,64),"sphere");
+const model: Model = {meshes: [sphere]}
 
 // const texture = new HDRI(gl, "/backpack/diffuse.jpg");
 const hdri = new HDRI(gl, "/sisulu_2k.hdr");
@@ -112,7 +118,6 @@ function render(now:number) {
 
   requestAnimationFrame(render);
 }
-
 
 requestAnimationFrame(render);
 }

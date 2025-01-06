@@ -1,9 +1,9 @@
 import { mat3, mat4, vec3 } from "gl-matrix";
 import { Camera } from "../camera";
 import { setAttribute } from "../draw-scene";
-import { Buffers } from "../init-buffers";
 import { initShaderProgram } from "../shader-handler";
 import { ProgramInfo } from "../webgl-demo";
+import { Buffers } from "../mesh";
 
 const vsSource = `# version 300 es
 

@@ -1,15 +1,14 @@
 import { mat3, mat4 } from "gl-matrix";
 import { setAttribute } from "../draw-scene";
-import { Buffers } from "../init-buffers";
 import { initShaderProgram } from "../shader-handler";
 import { ProgramInfo } from "../webgl-demo";
 import { Camera } from "../camera";
+import { Buffers } from "../mesh";
 
 // Vertex shader program
 const vsSource = `# version 300 es
 in vec2 aTextureCoord;
 in vec4 aVertexPosition;
-in vec4 aVertexColor;
 in vec3 aVertexNormal;
 
 uniform mat4 uViewMatrix;
@@ -17,14 +16,12 @@ uniform mat4 uModelMatrix;
 uniform mat4 uProjectionMatrix;
 uniform mat3 uNormalMatrix;
 
-out vec4 vColor;
 out vec2 vTextureCoord;
 out highp vec3 vLighting;
 out vec3 vNormal;
 
 void main() {
   gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix* aVertexPosition;
-  vColor = aVertexColor;
   vTextureCoord = aTextureCoord;
 
   // Apply lighting effect
@@ -44,7 +41,6 @@ void main() {
 
 const fsSource = `# version 300 es
 
-in highp vec4 vColor;
 in highp vec2 vTextureCoord;
 in highp vec3 vLighting;
 
@@ -115,13 +111,13 @@ export class BasicMaterial {
           3,
           gl.FLOAT
         );
-        setAttribute(
-            gl,
-            this.programInfo.attribLocations.vertexColor,
-            buffers.color,
-            3,
-            gl.FLOAT
-          );
+        // setAttribute(
+        //     gl,
+        //     this.programInfo.attribLocations.vertexColor,
+        //     buffers.color,
+        //     3,
+        //     gl.FLOAT
+        //   );
       }
 
 
